@@ -16,6 +16,7 @@ function draw() {
     drawEllipsesAroundCircle(posX, posY, circleSize);
     drawSurroundingCircles(posX, posY, 15, numCircles, circleSize);
     drawFilledSurroundingCircles(posX, posY, circleSize);
+    drawExtendingLine(posX, posY, circleSize);
   }
 
   // 绘制对角线上方的圆
@@ -31,6 +32,7 @@ function draw() {
     if (j == 0 || j == 3) {
       drawZigzagLines(upperCircleX, upperCircleY, circleSize);
     }
+    drawExtendingLine(upperCircleX, upperCircleY, circleSize);
   }
 
   for (let a = 0; a < numCircles - 2; a++) {
@@ -40,6 +42,7 @@ function draw() {
     drawEllipsesAroundCircle(upperCircleX1, upperCircleY1, circleSize);
     drawSurroundingCircles(upperCircleX1, upperCircleY1, 70, numCircles, circleSize);
     drawFilledSurroundingCircles(upperCircleX1, upperCircleY1, circleSize);
+    drawExtendingLine(upperCircleX1, upperCircleY1, circleSize);
   }
 
   // 绘制对角线下方的圆
@@ -55,6 +58,7 @@ function draw() {
     if (b == 1) {
       drawZigzagLines(lowerCircleX, lowerCircleY, circleSize);
     }
+    drawExtendingLine(lowerCircleX, lowerCircleY, circleSize);
   }
 
   for (let c = 0; c < numCircles - 3; c++) {
@@ -64,6 +68,7 @@ function draw() {
     drawEllipsesAroundCircle(lowerCircleX1, lowerCircleY1, circleSize);
     drawSurroundingCircles(lowerCircleX1, lowerCircleY1, 100, numCircles, circleSize);
     drawFilledSurroundingCircles(lowerCircleX1, lowerCircleY1, circleSize);
+    drawExtendingLine(lowerCircleX1, lowerCircleY1, circleSize);
   }
 }
 
@@ -170,6 +175,28 @@ function drawConcentricCircles(x, y, size) {
     ellipse(x, y, currentSize, currentSize);
     currentSize *= 0.7; // 层级大小递减
   }
+}
+
+function drawExtendingLine(centerX, centerY, circleSize) {
+  const HALF_PI = Math.PI / 2;
+  let angle = random(-HALF_PI, HALF_PI); // 随机选择一个角度范围，这里选择 -π/2 到 π/2 之间
+  let radius = circleSize / 1.6; // 半径为圆直径的一半
+
+  let xEnd = centerX + radius * cos(angle);
+  let yEnd = centerY + radius * sin(angle);
+
+  let controlX = centerX + radius * 0.4 * cos(angle); // 控制点 x 坐标为起点与终点的中点
+  let controlY = centerY + radius * 1 * sin(angle); // 控制点 y 坐标为圆心的 y 坐标
+
+  stroke(255, 20, 147); // 粉色
+  strokeWeight(4);
+
+  // 绘制曲线，起点为圆心，终点为圆周上的一点，控制点为控制点的坐标
+  noFill();
+  beginShape();
+  vertex(centerX, centerY);
+  quadraticVertex(controlX, controlY, xEnd, yEnd);
+  endShape();
 }
 
 //随机颜色
