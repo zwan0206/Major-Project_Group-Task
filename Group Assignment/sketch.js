@@ -1,28 +1,12 @@
-let angle = 0; // Initialize angle variable for animation
-let circlesDrawn = 0; // Track the number of circles drawn
-
 function setup() {
   createCanvas(600, 600);
   noLoop();
-  setupTimedEvents(); 
 }
 
 function draw() {
   background(0, 85, 128);
   let numCircles = 5; // 对角线上的圆的数量
   let circleSize = sqrt(sq(width) + sq(height)) / numCircles;//圆的直径
-
-  // Draw circles gradually one by one
-  if (circlesDrawn < numCircles) {
-    let posX = (circlesDrawn + 1) * (circleSize * 0.5) + circlesDrawn * (circleSize * 0.25);
-    let posY = posX;
-    drawConcentricCircles(posX, posY, circleSize);
-    drawEllipsesAroundCircle(posX, posY, circleSize);
-    drawSurroundingCircles(posX, posY, 15, numCircles, circleSize);
-    drawFilledSurroundingCircles(posX, posY, circleSize);
-    drawExtendingLine(posX, posY, circleSize);
-    circlesDrawn++;
-  }else{
 
   //绘制对角线上的圆
   for (let i = 0; i < numCircles; i++) {
@@ -86,7 +70,6 @@ function draw() {
     drawFilledSurroundingCircles(lowerCircleX1, lowerCircleY1, circleSize);
     drawExtendingLine(lowerCircleX1, lowerCircleY1, circleSize);
   }
-}
 }
 
 //绘制椭圆形的方法
@@ -214,17 +197,6 @@ function drawExtendingLine(centerX, centerY, circleSize) {
   vertex(centerX, centerY);
   quadraticVertex(controlX, controlY, xEnd, yEnd);
   endShape();
-}
-
-function animate() {
-  // Increment angle for time-based animation
-  angle += 0.01;
-  redraw(); // Redraw the canvas to reflect changes
-}
-
-// Set up timed events for animation
-function setupTimedEvents() {
-  setInterval(animate, 300); // Call the animate function every 100 milliseconds
 }
 
 //随机颜色
