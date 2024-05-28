@@ -5,10 +5,12 @@ function setup() {
 
 function draw() {
   background(0, 85, 128);
-  let numCircles = 5; // 对角线上的圆的数量
-  let circleSize = sqrt(sq(width) + sq(height)) / numCircles;//圆的直径
+  // The number of circles on the diagonal
+  let numCircles = 5; 
+  // The diameter of the circle
+  let circleSize = sqrt(sq(width) + sq(height)) / numCircles;
 
-  //绘制对角线上的圆
+  //Draw circles on the diagonal
   for (let i = 0; i < numCircles; i++) {
     let posX = (i + 1) * (circleSize * 0.5) + i * (circleSize * 0.25);
     let posY = posX;
@@ -19,7 +21,7 @@ function draw() {
     drawExtendingLine(posX, posY, circleSize);
   }
 
-  // 绘制对角线上方的圆
+  // Draw circles above the diagonal
   for (let j = 0; j < numCircles - 1; j++) {
     let upperCircleX = j * (circleSize * 0.80) + (circleSize * 1.55);
     let upperCircleY = j * (circleSize * 0.80) + (circleSize * 0.15);
@@ -45,7 +47,7 @@ function draw() {
     drawExtendingLine(upperCircleX1, upperCircleY1, circleSize);
   }
 
-  // 绘制对角线下方的圆
+  // Draw circles below the diagonal
   for (let b = 0; b < numCircles - 1; b++) {
     let lowerCircleX = b * (circleSize * 0.75) + (circleSize * 0.15);
     let lowerCircleY = b * (circleSize * 0.80) + (circleSize * 1.5);
@@ -72,7 +74,7 @@ function draw() {
   }
 }
 
-//绘制椭圆形的方法
+//Draw ellipses
 function drawEllipse(centerX, centerY, ellipseWidth, ellipseHeight, rotation) {
   push();
   translate(centerX, centerY);
@@ -91,23 +93,25 @@ function drawEllipse(centerX, centerY, ellipseWidth, ellipseHeight, rotation) {
   pop();
 }
 
-//绘制椭圆形环绕圆形
+//Draw ellipses to enclose circles
 function drawEllipsesAroundCircle(centerX, centerY, circleSize) {
-  let numEllipses = 33;  // 椭圆的数量
+  let numEllipses = 33; 
   let ellipseWidth = circleSize / 19;  
   let ellipseHeight = circleSize / 40; 
-  let radius = circleSize / 1.8;  // 椭圆到圆心的距离
+  // The distance from the ellipse to the center of the circle
+  let radius = circleSize / 1.8;
 
   for (let i = 0; i < numEllipses; i++) {
     let angle = TWO_PI * i / numEllipses;
     let ellipseCenterX = centerX + radius * cos(angle);
     let ellipseCenterY = centerY + radius * sin(angle);
-    let rotation = angle + HALF_PI;  // 旋转椭圆使椭圆的长轴与圆的半径垂直
+    // Rotating the ellipse makes the long axis of the ellipse perpendicular to the radius of the circle.
+    let rotation = angle + HALF_PI; 
     drawEllipse(ellipseCenterX, ellipseCenterY, ellipseWidth, ellipseHeight, rotation);
   }
 }
 
-//绘制锯齿形线条的方法
+//Draw zigzag lines
 function drawZigzagLines(centerX, centerY, circleSize) {
   let radius = circleSize / 2;
   let numZigzags = 80;
@@ -124,16 +128,18 @@ function drawZigzagLines(centerX, centerY, circleSize) {
     let x = centerX + radius * cos(angle);
     let y = centerY + radius * sin(angle);
     vertex(x, y);
+    // Alternate between two radii for zigzag effect
     radius = i % 2 === 0 ? circleSize / 2 : circleSize / 4; // Alternate between two radii for zigzag effect
   }
   endShape(CLOSE);
   pop();
 }
 
-//绘制填充并环绕大圆形的内部小圆的方法
+//Draw small circles inside circles
 function drawFilledSurroundingCircles(centerX, centerY, circleSize) {
-  let smallCircleSize = circleSize / 25; // 小圆的直径
-  let radius = circleSize / 2 - smallCircleSize / 2 - 2; // 小圆中心到大圆中心的距离
+  let smallCircleSize = circleSize / 25;
+  // The distance from the center of the minor circle to the center of the great circle
+  let radius = circleSize / 2 - smallCircleSize / 2 - 2;
   
   for (let i = 0; i < 5; i++) {
     for (angle = 0; angle < 360; angle += 10) {
@@ -146,10 +152,11 @@ function drawFilledSurroundingCircles(centerX, centerY, circleSize) {
   }
 }
 
-//绘制环绕大圆的外部小圆的方法
+//Draw small circles around circles
 function drawSurroundingCircles(centerX, centerY, angle, numCircles, circleSize) {
-  let smallCircleSize = circleSize / 15; // 小圆的直径
-  let radius = circleSize / 2 + smallCircleSize / 2 + 2; // 小圆中心到大圆中心的距离
+  let smallCircleSize = circleSize / 15; 
+  // The distance from the center of the minor circle to the center of the great circle
+  let radius = circleSize / 2 + smallCircleSize / 2 + 2;
 
   for (let i = 0; i < numCircles; i++) {
     for (angle; angle < 360; angle += 72) {
@@ -163,43 +170,52 @@ function drawSurroundingCircles(centerX, centerY, angle, numCircles, circleSize)
     }
   }
 }
-//绘制同轴圆形组合的方法
+// Draw combinations of concentric circles
 function drawConcentricCircles(x, y, size) {
-  const layers = random(4, 10); // 随机层数
+  // Random number of layers
+  const layers = random(4, 10);
   let currentSize = size;
 
   for (let i = 0; i < layers; i++) {
     stroke(0, 0, 0);
     strokeWeight(random(3));
-    fill(randomColor()); // 使用随机颜色
+    // Use the random color function
+    fill(randomColor());
     ellipse(x, y, currentSize, currentSize);
-    currentSize *= 0.7; // 层级大小递减
+    // The level is decreasing in size
+    currentSize *= 0.7; 
   }
 }
 
+// Draw extension lines based on the mouse position.
 function drawExtendingLine(centerX, centerY, circleSize) {
   const HALF_PI = Math.PI / 2;
-  let angle = random(-HALF_PI, HALF_PI); // 随机选择一个角度范围，这里选择 -π/2 到 π/2 之间
-  let radius = circleSize / 1.6; // 半径为圆直径的一半
+  // Randomly select an angle range, here between -π/2 and π/2
+  let angle = random(-HALF_PI, HALF_PI); 
+  let radius = circleSize / 1.6; 
 
   let xEnd = centerX + radius * cos(angle);
   let yEnd = centerY + radius * sin(angle);
 
-  let controlX = centerX + radius * 0.4 * cos(angle); // 控制点 x 坐标为起点与终点的中点
-  let controlY = centerY + radius * 1 * sin(angle); // 控制点 y 坐标为圆心的 y 坐标
+  // The control point x-coordinate is the midpoint of the start and end points.
+  let controlX = centerX + radius * 0.4 * cos(angle); 
+  // The y-coordinate of the control point is the y-coordinate of the center of the circle.
+  let controlY = centerY + radius * 1 * sin(angle);
 
-  stroke(255, 20, 147); // 粉色
+  stroke(255, 20, 147);
   strokeWeight(4);
 
-  // 绘制曲线，起点为圆心，终点为圆周上的一点，控制点为控制点的坐标
+  // Draw a curve with the start point being the center of the circle, the end point being a point on the circumference, and the control point being the coordinates of the control point.
   noFill();
   beginShape();
+  // The 'vertex()' function is a function used to define vertices, which is used to create and draw shapes, and here it is used to define the starting point of the extension line.
   vertex(centerX, centerY);
+  // The 'quadraticVertex()' function is a function used to plot quadratic Bezier curves. A quadratic Bezier curve is defined by a starting point, a control point, and an end point. This function makes the curve bend smoothly between the start and end points by giving the coordinates of the control points. Here it is used to plot a quadratic Bezier curve that extends from the center of the circle to the circumference.
   quadraticVertex(controlX, controlY, xEnd, yEnd);
   endShape();
 }
 
-//随机颜色
+// Set a random color
 function randomColor() {
   return color(random(255), random(255), random(255));
 }
